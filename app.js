@@ -1,5 +1,5 @@
 import dotenv from 'dotenv/config';
-import expressListEndpoints from 'express-list-endpoints';
+// import expressListEndpoints from 'express-list-endpoints';
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
@@ -7,7 +7,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-
+import fetchWeatherData from './services/weather.js';
+import fetchClimateData from './services/climate.js';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import climateRouter from './routes/climate.js';
@@ -32,7 +33,7 @@ app.use('/users', usersRouter);
 app.use('/api/climate', climateRouter);
 app.use('/api/weather', weatherRouter);
 
-console.log(expressListEndpoints(app));
+// console.log(expressListEndpoints(app));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -49,5 +50,11 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+fetchWeatherData();
+setInterval(fetchWeatherData, process.env.FETCH_INTERVAL);
+
+fetchClimateData();
+setInterval(fetchClimateData, process.env.FETCH_INTERVAL);
 
 export default app;

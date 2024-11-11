@@ -1,18 +1,14 @@
-import mysql from 'mysql2';
+import mysql from 'mysql2/promise';
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error('Database connection failed: ', err);
-    return;
-  }
-  console.log('Connected to the database.');
+// Configure database connection
+const db = mysql.createPool({
+  host: '192.168.2.2',           // Replace with your DB host
+  user: 'root',                // Replace with your DB username
+  password: 'password',        // Replace with your DB password
+  database: 'mariadb',   // Replace with your DB name
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
 export default db;
