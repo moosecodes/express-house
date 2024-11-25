@@ -52,9 +52,9 @@ app.use((err, req, res, next) => {
 });
 
 fetchWeatherData();
-setInterval(fetchWeatherData, process.env.FETCH_INTERVAL);
+setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL);
 
 fetchClimateData();
-setInterval(fetchClimateData, process.env.FETCH_INTERVAL);
+setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
 
 export default app;

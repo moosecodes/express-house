@@ -1,10 +1,11 @@
+
 // Arduino Language
 
 #include <DHT.h>
 
 #define DHTTYPE DHT11
 #define DHTPIN 2
-#define INTERVAL 60000 // 1 minute
+#define INTERVAL 60000
 
 DHT dht(DHTPIN, DHTTYPE);
 
