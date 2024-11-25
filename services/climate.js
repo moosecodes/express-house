@@ -1,5 +1,5 @@
 import { SerialPort, ReadlineParser } from 'serialport';
-import db from '../services/utils.js';
+import { db } from '../services/utils.js';
 
 // Configure serial port
 const serialPort = new SerialPort({

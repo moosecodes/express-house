@@ -1,5 +1,5 @@
 import axios from "axios";
-import db from '../services/utils.js';
+import { db } from '../services/utils.js';
 
 const fetchWeatherData = async () => {
   try {

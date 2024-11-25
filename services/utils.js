@@ -1,14 +1,25 @@
 import mysql from 'mysql2/promise';
+import fetchWeatherData from './weather.js';
+import fetchClimateData from './climate.js';
 
 // Configure database connection
-const db = mysql.createPool({
+export const db = mysql.createPool({
   host: '192.168.2.2',           // Replace with your DB host
-  user: 'root',                // Replace with your DB username
-  password: 'password',        // Replace with your DB password
-  database: 'mariadb',   // Replace with your DB name
+  user: 'root',                  // Replace with your DB username
+  password: 'password',          // Replace with your DB password
+  database: 'mariadb',           // Replace with your DB name
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
 
-export default db;
+// Function to start readings
+export const startReadings = () => {
+  fetchWeatherData();
+  setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL || 60000); // Default interval of 60 seconds
+
+  fetchClimateData();
+  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL || 60000); // Default interval of 60 seconds
+};
+
+export default { db, startReadings };

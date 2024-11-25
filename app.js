@@ -1,18 +1,20 @@
-import dotenv from 'dotenv/config';
 // import expressListEndpoints from 'express-list-endpoints';
+import dotenv from 'dotenv/config';
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import fetchWeatherData from './services/weather.js';
-import fetchClimateData from './services/climate.js';
+
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import climateRouter from './routes/climate.js';
 import weatherRouter from './routes/weather.js';
+
+import { startReadings } from './services/utils.js';
 
 const app = express();
 
@@ -51,10 +53,6 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-fetchWeatherData();
-setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL);
-
-fetchClimateData();
-setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
+startReadings();
 
 export default app;
