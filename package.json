@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon ./bin/www",
-    "start:trace": "./node_modules/.bin/nodemon --trace-warnings ./bin/www"
+    "start": "node_modules/.bin/nodemon ./bin/www",
+    "start:trace": "./node_modules/.bin/nodemon --trace-warnings ./bin/www",
+    "debug": "DEBUG=express-house:* npm start"
   },
   "dependencies": {
     "axios": "^1.7.7",

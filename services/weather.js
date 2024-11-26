@@ -19,7 +19,7 @@ const fetchWeatherData = async () => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    console.log("Weather data:", [temp, feels_like, temp_min, temp_max, humidity, name, main, description]);
+    console.log("Weather data:", [temp, feels_like, temp_min, temp_max, humidity, name, description]);
 
     db.query(insertQuery, [temp, feels_like, temp_min, temp_max, humidity, name, main, description], (err, results) => {
       if (err) {

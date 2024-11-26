@@ -4,7 +4,7 @@ import fetchClimateData from './climate.js';
 
 // Configure database connection
 export const db = mysql.createPool({
-  host: '192.168.2.2',           // Replace with your DB host
+  host: '127.0.0.1',           // Replace with your DB host
   user: 'root',                  // Replace with your DB username
   password: 'password',          // Replace with your DB password
   database: 'mariadb',           // Replace with your DB name
@@ -16,10 +16,10 @@ export const db = mysql.createPool({
 // Function to start readings
 export const startReadings = () => {
   fetchWeatherData();
-  setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL || 60000); // Default interval of 60 seconds
+  setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL || 600000); // Default interval of 60 seconds
 
   fetchClimateData();
-  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL || 60000); // Default interval of 60 seconds
+  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL || 600000); // Default interval of 60 seconds
 };
 
 export default { db, startReadings };
