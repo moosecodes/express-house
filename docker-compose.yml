@@ -13,17 +13,17 @@ services:
   #     - DB_NAME=mariadb
   #   depends_on:
   #     - mariadb
-  #   healthcheck:
-  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:5001" ]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
   #   volumes:
   #     - .:/app
   #   devices:
   #     - "/dev/us.usbmodem1101:/dev/us.usbmodem1101"
   #   tty: true
   #   privileged: true
+  #   healthcheck:
+  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:5001" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
   mariadb:
     image: mariadb:latest
     container_name: mariadb
