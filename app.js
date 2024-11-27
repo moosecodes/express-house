@@ -59,8 +59,8 @@ const startReadings = () => {
   fetchWeatherData();
   setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL);
 
-  fetchClimateData();
-  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
+  // fetchClimateData();
+  // setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
 };
 
 startReadings();

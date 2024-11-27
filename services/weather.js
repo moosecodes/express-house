@@ -1,15 +1,5 @@
 import axios from "axios";
-import mysql from 'mysql2/promise';
-
-const db = mysql.createPool({
-  host: 'mariadb',           // Replace with your DB host
-  user: 'root',                  // Replace with your DB username
-  password: 'password',          // Replace with your DB password
-  database: 'mariadb',           // Replace with your DB name
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+import db from '../utils/database.js';
 
 const fetchWeatherData = async () => {
   try {

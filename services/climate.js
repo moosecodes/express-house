@@ -1,17 +1,6 @@
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline'; // Import ReadlineParser explicitly
-import mysql from 'mysql2/promise';
-
-const db = mysql.createPool({
-  host: 'mariadb',           // Replace with your DB host
-  user: 'root',                  // Replace with your DB username
-  password: 'password',          // Replace with your DB password
-  database: 'mariadb',           // Replace with your DB name
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
-
+import db from '../utils/database.js';
 
 // Main function to fetch and handle climate data
 const fetchClimateData = async () => {

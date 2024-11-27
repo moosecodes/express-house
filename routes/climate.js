@@ -1,16 +1,5 @@
 import express from 'express';
-import mysql from 'mysql2/promise';
-
-// Configure database connection
-const db = mysql.createPool({
-  host: '127.0.0.1',           // Replace with your DB host
-  user: 'root',                  // Replace with your DB username
-  password: 'password',          // Replace with your DB password
-  database: 'mariadb',           // Replace with your DB name
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+import db from '../utils/database.js';
 
 const router = express.Router();
 
