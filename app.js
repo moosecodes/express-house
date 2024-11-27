@@ -14,7 +14,8 @@ import usersRouter from './routes/users.js';
 import climateRouter from './routes/climate.js';
 import weatherRouter from './routes/weather.js';
 
-import { startReadings } from './services/utils.js';
+import fetchWeatherData from './services/weather.js';
+import fetchClimateData from './services/climate.js';
 
 const app = express();
 
@@ -52,6 +53,17 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+// Function to start readings
+const startReadings = () => {
+  // fetchWeatherData();
+  // setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL || 600000); // Default interval of 60 seconds
+
+  fetchClimateData();
+  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL || 600000); // Default interval of 60 seconds
+}; 
 
 startReadings();
 

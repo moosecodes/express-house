@@ -5,22 +5,23 @@ services:
   #     context: .
   #   container_name: express-app
   #   ports:
-  #     - "5001:5001"
+  #     - "3000:3000"
   #   environment:
   #     - DB_HOST=127.0.0.1
   #     - DB_USER=root
   #     - DB_PASSWORD=password
   #     - DB_NAME=mariadb
   #   depends_on:
-  #     - mariadb
+  #     mariadb:
+  #       condition: service_healthy
   #   volumes:
   #     - .:/app
   #   devices:
-  #     - "/dev/us.usbmodem1101:/dev/us.usbmodem1101"
+  #     - "/dev/tty.usbmodem12301:/dev/tty.usbmodem12301"
   #   tty: true
   #   privileged: true
   #   healthcheck:
-  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:5001" ]
+  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:3000" ]
   #     interval: 30s
   #     timeout: 10s
   #     retries: 3
@@ -36,10 +37,11 @@ services:
       - mariadb_data:/var/lib/mysql
       - ./my.cnf:/etc/mysql/conf.d/my.cnf # Add this line to load the config
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 volumes:
   mariadb_data:

@@ -1,6 +1,16 @@
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline'; // Import ReadlineParser explicitly
-import { db } from '../services/utils.js';
+import mysql from 'mysql2/promise';
+
+const db = mysql.createPool({
+  host: 'mariadb',           // Replace with your DB host
+  user: 'root',                  // Replace with your DB username
+  password: 'password',          // Replace with your DB password
+  database: 'mariadb',           // Replace with your DB name
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
 
 // Main function to fetch and handle climate data
@@ -42,11 +52,12 @@ const fetchClimateData = async () => {
   async function getSerialPortPath() {
     try {
       const ports = await SerialPort.list(); // Get the list of available ports
-
-      // Example logic: Match a specific device (adjust based on your criteria)
+// console.log(ports);
+      // const targetPort = ports.find(port => port.path === '/dev/ttyS0');
       const targetPort = ports.find(port => port.vendorId === '2341' && port.productId === '8036' && port.manufacturer === 'Arduino LLC');
 
       if (targetPort) {
+        
         return targetPort.path;
       } else {
         console.error('Target serial device not found.');
