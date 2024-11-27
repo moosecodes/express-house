@@ -3,41 +3,40 @@ services:
     env_file: .env
     build:
       context: .
-    container_name: express-app
+    container_name: ${EXPRESS_APP_NAME:-express-app}
     ports:
-      - "3000:3000"
+      - "${EXPRESS_PORT:-3000}:${EXPRESS_PORT:-3000}"
     environment:
-      - DB_HOST=127.0.0.1
-      - DB_USER=root
-      - DB_PASSWORD=password
-      - DB_NAME=mariadb
-      - TZ=America/Chicago
+      - DB_HOST=${DB_HOST:-127.0.0.1}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-mariadb}
+      - TZ=${TIMEZONE:-America/Chicago}
     depends_on:
       mariadb:
         condition: service_healthy
     volumes:
       - .:/app
-    # devices:
-    #   - "/dev/ttyACM0:/dev/ttyACM0"
     tty: true
     privileged: true
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://127.0.0.1:3000" ]
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${EXPRESS_PORT:-3000}" ]
       interval: 30s
       timeout: 10s
       retries: 3
+
   mariadb:
     image: mariadb:latest
-    container_name: mariadb
+    container_name: ${MARIADB_CONTAINER_NAME:-mariadb}
     ports:
-      - "3306:3306" # Exposes MySQL on the network
+      - "${MARIADB_PORT:-3306}:${MARIADB_PORT:-3306}"
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=mariadb
-      - TZ=America/Chicago
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-password}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-mariadb}
+      - TZ=${TIMEZONE:-America/Chicago}
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./my.cnf:/etc/mysql/conf.d/my.cnf # Add this line to load the config
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
       start_period: 10s

@@ -10,7 +10,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
 import climateRouter from './routes/climate.js';
 import weatherRouter from './routes/weather.js';
 
@@ -32,7 +31,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(''), 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/api/climate', climateRouter);
 app.use('/api/weather', weatherRouter);
 
