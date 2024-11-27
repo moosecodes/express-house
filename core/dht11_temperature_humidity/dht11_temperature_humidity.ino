@@ -5,7 +5,7 @@
 
 #define DHTTYPE DHT11
 #define DHTPIN 2
-#define INTERVAL 1000
+#define INTERVAL 600000
 
 DHT dht(DHTPIN, DHTTYPE);
 

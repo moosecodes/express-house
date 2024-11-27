@@ -48,36 +48,37 @@ const fetchClimateData = async () => {
     }
   });
 };
-  // Function to dynamically get the serial port
-  async function getSerialPortPath() {
-    try {
-      const ports = await SerialPort.list(); // Get the list of available ports
-// console.log(ports);
-      // const targetPort = ports.find(port => port.path === '/dev/ttyS0');
-      const targetPort = ports.find(port => port.vendorId === '2341' && port.productId === '8036' && port.manufacturer === 'Arduino LLC');
+// Function to dynamically get the serial port
+async function getSerialPortPath() {
+  try {
+    const ports = await SerialPort.list(); // Get the list of available ports
+    // console.log(ports);
+    const targetPort = ports.find(port => port.path === process.env.ARDUINO_PORT);
+    // const targetPort = ports.find(port => port.vendorId === '2341' && port.productId === '8036' && port.manufacturer === 'Arduino LLC');
 
-      if (targetPort) {
-        
-        return targetPort.path;
-      } else {
-        console.error('Target serial device not found.');
-        return null;
-      }
-    } catch (error) {
-      console.error('Error fetching serial ports:', error);
+    if (targetPort) {
+
+      return targetPort.path;
+    } else {
+      console.error('Target serial device not found.');
       return null;
     }
+  } catch (error) {
+    console.error('Error fetching serial ports:', error);
+    return null;
   }
+}
 
-  // Function to handle and insert data into DB
-  async function insertClimateData(farenheit, celsius, humidity) {
-    try {
-      const query = 'INSERT INTO mariadb.dht11_readings (farenheit, celsius, humidity) VALUES (?, ?, ?)';
-      await db.query(query, [farenheit, celsius, humidity]);
-    } catch (error) {
-      console.error('Error inserting climate data:', error);
-    }
+// Function to handle and insert data into DB
+async function insertClimateData(farenheit, celsius, humidity) {
+  try {
+    const query = 'INSERT INTO mariadb.dht11_readings (farenheit, celsius, humidity) VALUES (?, ?, ?)';
+    await db.query(query, [farenheit, celsius, humidity]);
+    console.log('Climate data inserted successfully.');
+  } catch (error) {
+    console.error('Error inserting climate data:', error);
   }
+}
 
 
 export default fetchClimateData;

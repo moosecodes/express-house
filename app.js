@@ -58,12 +58,12 @@ app.use((err, req, res, next) => {
 
 // Function to start readings
 const startReadings = () => {
-  // fetchWeatherData();
-  // setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL || 600000); // Default interval of 60 seconds
+  fetchWeatherData();
+  setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL);
 
   fetchClimateData();
-  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL || 600000); // Default interval of 60 seconds
-}; 
+  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
+};
 
 startReadings();
 
