@@ -25,24 +25,5 @@ services:
       timeout: 10s
       retries: 3
 
-  mariadb:
-    image: mariadb:latest
-    container_name: ${MARIADB_CONTAINER_NAME:-mariadb}
-    ports:
-      - "${MARIADB_PORT:-3306}:${MARIADB_PORT:-3306}"
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-password}
-      - MYSQL_DATABASE=${MYSQL_DATABASE:-mariadb}
-      - TZ=${TIMEZONE:-America/Chicago}
-    volumes:
-      - mariadb_data:/var/lib/mysql
-      - ./my.cnf:/etc/mysql/conf.d/my.cnf
-    healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 3
-
 volumes:
   mariadb_data:
