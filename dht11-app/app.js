@@ -11,9 +11,6 @@ import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
 import climateRouter from './routes/climate.js';
-import weatherRouter from './routes/weather.js';
-
-import fetchWeatherData from './services/weather.js';
 import fetchClimateData from './services/climate.js';
 
 const app = express();
@@ -32,7 +29,6 @@ app.use(express.static(path.join(path.dirname(''), 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/climate', climateRouter);
-app.use('/api/weather', weatherRouter);
 
 // console.log(expressListEndpoints(app));
 
@@ -54,9 +50,6 @@ app.use((err, req, res, next) => {
 
 // Function to start readings
 const startReadings = () => {
-  fetchWeatherData();
-  setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL);
-
   fetchClimateData();
   setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
 };

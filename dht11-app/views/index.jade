@@ -2,4 +2,9 @@ extends layout
 
 block content
   h1=title
-  p Welcome to the #{title}
+    h2 Sensor Data
+    if sensorData
+      pre= JSON.stringify(sensorData, null, 2)
+    else
+      p No sensor data available.
+
