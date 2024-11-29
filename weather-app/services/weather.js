@@ -9,19 +9,20 @@ const fetchWeatherData = async () => {
 
     const weatherData = response.data;
 
+    const { lat, lon } = weatherData.coord;
     const { temp, feels_like, temp_min, temp_max, humidity } = weatherData.main;
-    const { main, description } = weatherData.weather[0];
+    const { main, description, icon } = weatherData.weather[0];
     const { name } = weatherData;
 
     const insertQuery = `
       INSERT INTO mariadb.weather_readings 
-      (farenheit, feels_like, temp_min, temp_max, humidity, name, conditions, description) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      (farenheit, feels_like, temp_min, temp_max, humidity, name, conditions, description, icon, lat, lon) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    console.log("Weather data:", [temp, feels_like, temp_min, temp_max, humidity, name, description]);
+    console.log("Weather data:", [temp, feels_like, temp_min, temp_max, humidity, name, description, icon, lat, lon]);
 
-    db.query(insertQuery, [temp, feels_like, temp_min, temp_max, humidity, name, main, description], (err, results) => {
+    db.query(insertQuery, [temp, feels_like, temp_min, temp_max, humidity, name, main, description, icon, lat, lon], (err, results) => {
       if (err) {
         console.error("Error inserting data:", err);
       } else {
