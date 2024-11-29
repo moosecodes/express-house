@@ -59,6 +59,7 @@ async function getSerialPortPath() {
       port.vendorId === '2341' ||  // Arduino's USB vendor ID
       port.productId === '8036' || // A common Arduino board product ID
       port.path.includes('/dev/tty.usbmodem') ||  // macOS pattern
+      port.path.includes('/dev/usb.usbmodem') ||  // macOS pattern
       port.path.includes('/dev/ttyACM')           // Linux pattern
     );
 

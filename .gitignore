@@ -1,6 +1,7 @@
 .env
 public/
 .vscode/
+*_data/
 
 # dependencies
 node_modules/
