@@ -50,15 +50,23 @@ const fetchClimateData = async () => {
 // Function to dynamically get the serial port
 async function getSerialPortPath() {
   try {
-    const ports = await SerialPort.list(); // Get the list of available ports
-    // console.log(ports);
-    const targetPort = ports.find(port => port.path === process.env.ARDUINO_PORT);
-    // const targetPort = ports.find(port => port.vendorId === '2341' && port.productId === '8036' && port.manufacturer === 'Arduino LLC');
+    const ports = await SerialPort.list();
+    
+    // Look for ports that are likely to be Arduino devices
+    const arduinoPorts = ports.filter(port => 
+      // Check for common Arduino-related characteristics
+      port.manufacturer?.toLowerCase().includes('arduino') ||
+      port.vendorId === '2341' ||  // Arduino's USB vendor ID
+      port.productId === '8036' || // A common Arduino board product ID
+      port.path.includes('/dev/tty.usbmodem') ||  // macOS pattern
+      port.path.includes('/dev/ttyACM')           // Linux pattern
+    );
 
-    if (targetPort) {
-      return targetPort.path;
+    if (arduinoPorts.length > 0) {
+      console.log('Potential Arduino ports found:', arduinoPorts.map(p => p.path));
+      return arduinoPorts[0].path;  // Return the first matching port
     } else {
-      console.error('Target serial device not found.');
+      console.error('No Arduino device found.');
       return null;
     }
   } catch (error) {
