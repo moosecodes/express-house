@@ -39,9 +39,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-password}
       - DB_NAME=${DB_NAME:-mariadb}
       - TZ=${TIMEZONE:-America/Chicago}
-    # depends_on:
-    #   mariadb:
-    #     condition: service_healthy
+    depends_on:
+      mariadb:
+        condition: service_healthy
     volumes:
       - ./weather-app:/app
     networks:

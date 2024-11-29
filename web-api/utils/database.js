@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise';
 
 const db = mysql.createPool({
-  host: 'mariadb',  // or 127.0.0.1
+  host: process.env.DB_HOST,
   user: 'root',
   password: 'password',
   database: 'mariadb',
