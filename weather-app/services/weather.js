@@ -3,6 +3,7 @@ import db from '../utils/database.js';
 
 const fetchWeatherData = async () => {
   try {
+    // Fetch weather data from OpenWeather API
     const response = await axios.get(
       `${process.env.OPENWEATHER_BASE_URL}?appid=${process.env.OPENWEATHER_API_KEY}&lat=${process.env.OPENWEATHER_LAT}&lon=${process.env.OPENWEATHER_LONG}&units=${process.env.OPENWEATHER_UNITS}`
     );
@@ -20,18 +21,17 @@ const fetchWeatherData = async () => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    console.log("Weather data:", [temp, feels_like, temp_min, temp_max, humidity, name, description, icon, lat, lon]);
+    console.log("Weather data:", [temp, feels_like, temp_min, temp_max, humidity, name, main, description, icon, lat, lon]);
 
-    db.query(insertQuery, [temp, feels_like, temp_min, temp_max, humidity, name, main, description, icon, lat, lon], (err, results) => {
-      if (err) {
-        console.error("Error inserting data:", err);
-      } else {
-        console.log("Weather data saved to database:", results);
-      }
-    });
+    // Insert data into the database using async/await
+    const [results] = await db.query(insertQuery, [
+      temp, feels_like, temp_min, temp_max, humidity, name, main, description, icon, lat, lon
+    ]);
+
+    console.log("Weather data saved to database:", results);
 
   } catch (error) {
-    console.error("Error fetching weather data:", error);
+    console.error("Error fetching or saving weather data:", error);
   }
 };
 
