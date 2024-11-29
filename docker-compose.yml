@@ -1,13 +1,13 @@
 services:
-  express-app:
+  dht11-app:
     env_file: .env
     build:
-      context: .
-    container_name: ${EXPRESS_APP_NAME:-express-app}
+      context: ./dht11-app
+    container_name: ${DHT11_APP_NAME:-dht11-app}
     ports:
-      - "${EXPRESS_PORT:-3000}:${EXPRESS_PORT:-3000}"
+      - "${DHT11_PORT:-3000}:${DHT11_PORT:-3000}"
     environment:
-      - DB_HOST=${DB_HOST:-127.0.0.1}
+      - DB_HOST=${DB_HOST:-mariadb}
       - DB_USER=${DB_USER:-root}
       - DB_PASSWORD=${DB_PASSWORD:-password}
       - DB_NAME=${DB_NAME:-mariadb}
@@ -16,11 +16,40 @@ services:
       mariadb:
         condition: service_healthy
     volumes:
-      - .:/app
+      - ./dht11-app:/app
+    networks:
+      - app-network
     tty: true
     privileged: true
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${EXPRESS_PORT:-3000}" ]
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${DHT11_PORT:-3000}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  weather-app:
+    env_file: .env
+    build:
+      context: ./weather-app
+    container_name: ${WEATHER_APP_NAME:-weather-app}
+    ports:
+      - "${WEATHER_PORT:-3001}:${WEATHER_PORT:-3001}"
+    environment:
+      - DB_HOST=${DB_HOST:-mariadb}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-mariadb}
+      - TZ=${TIMEZONE:-America/Chicago}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - ./weather-app:/app
+    networks:
+      - app-network
+    tty: true
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${WEATHER_PORT:-3001}" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -43,6 +72,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - app-network
 
 volumes:
   mariadb_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -52,15 +52,13 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-
-
 // Function to start readings
 const startReadings = () => {
   fetchWeatherData();
   setInterval(fetchWeatherData, process.env.WEATHER_FETCH_INTERVAL);
 
-  // fetchClimateData();
-  // setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
+  fetchClimateData();
+  setInterval(fetchClimateData, process.env.WEATHER_FETCH_INTERVAL);
 };
 
 startReadings();
