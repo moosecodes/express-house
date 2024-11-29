@@ -63,7 +63,7 @@ services:
   #       - MYSQL_DATABASE=${MYSQL_DATABASE:-mariadb}
   #       - TZ=${TIMEZONE:-America/Chicago}
   #     volumes:
-  #       - mariadb_data:/var/lib/mysql
+  #       - ./mariadb_data:/var/lib/mysql
   #       - ./my.cnf:/etc/mysql/conf.d/my.cnf
   #     healthcheck:
   #       test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
