@@ -1,31 +1,43 @@
 services:
-  dht11-app:
-    env_file: .env
+  # dht11-app:
+  #   env_file: .env
+  #   build:
+  #     context: ./dht11-app
+  #   container_name: ${DHT11_APP_NAME:-dht11-app}
+  #   ports:
+  #     - "${DHT11_PORT:-3009}:${DHT11_PORT:-3009}"
+  #   environment:
+  #     - DB_HOST=${DB_HOST:-mariadb}
+  #     - DB_USER=${DB_USER:-root}
+  #     - DB_PASSWORD=${DB_PASSWORD:-password}
+  #     - DB_NAME=${DB_NAME:-mariadb}
+  #     - TZ=${TIMEZONE:-America/Chicago}
+  #   depends_on:
+  #     mariadb:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ./dht11-app:/app
+  #   networks:
+  #     - app-network
+  #   tty: true
+  #   privileged: true
+  #   healthcheck:
+  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:${DHT11_PORT:-3009}" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
+  react-app:
     build:
-      context: ./dht11-app
-    container_name: ${DHT11_APP_NAME:-dht11-app}
+      context: ./front-end
+      dockerfile: Dockerfile
     ports:
-      - "${DHT11_PORT:-3000}:${DHT11_PORT:-3000}"
-    environment:
-      - DB_HOST=${DB_HOST:-mariadb}
-      - DB_USER=${DB_USER:-root}
-      - DB_PASSWORD=${DB_PASSWORD:-password}
-      - DB_NAME=${DB_NAME:-mariadb}
-      - TZ=${TIMEZONE:-America/Chicago}
-    depends_on:
-      mariadb:
-        condition: service_healthy
+      - "3000:3000"
     volumes:
-      - ./dht11-app:/app
-    networks:
-      - app-network
-    tty: true
-    privileged: true
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${DHT11_PORT:-3000}" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - ./front-end:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
   weather-app:
     env_file: .env
@@ -54,32 +66,32 @@ services:
       timeout: 10s
       retries: 3
   
-  # web-api:
-  #   env_file: .env
-  #   build:
-  #     context: ./web-api
-  #   container_name: ${WEB_API_NAME:-web-api}
-  #   ports:
-  #     - "${WEB_API_PORT:-3002}:${WEB_API_PORT:-3002}"
-  #   environment:
-  #     - DB_HOST=${DB_HOST:-mariadb}
-  #     - DB_USER=${DB_USER:-root}
-  #     - DB_PASSWORD=${DB_PASSWORD:-password}
-  #     - DB_NAME=${DB_NAME:-mariadb}
-  #     - TZ=${TIMEZONE:-America/Chicago}
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
-  #   volumes:
-  #     - ./web-api:/app
-  #   networks:
-  #     - app-network
-  #   tty: true
-  #   healthcheck:
-  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:${WEB_API_PORT:-3002}" ]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
+  web-api:
+    env_file: .env
+    build:
+      context: ./web-api
+    container_name: ${WEB_API_NAME:-web-api}
+    ports:
+      - "${WEB_API_PORT:-3002}:${WEB_API_PORT:-3002}"
+    environment:
+      - DB_HOST=${DB_HOST:-mariadb}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-mariadb}
+      - TZ=${TIMEZONE:-America/Chicago}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - ./web-api:/app
+    networks:
+      - app-network
+    tty: true
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${WEB_API_PORT:-3002}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   mariadb:
     image: mariadb:latest
