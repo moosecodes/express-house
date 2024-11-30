@@ -1,32 +1,4 @@
 services:
-  # dht11-app:
-  #   env_file: .env
-  #   build:
-  #     context: ./dht11-app
-  #   container_name: ${DHT11_APP_NAME:-dht11-app}
-  #   ports:
-  #     - "${DHT11_PORT:-3009}:${DHT11_PORT:-3009}"
-  #   environment:
-  #     - DB_HOST=${DB_HOST:-mariadb}
-  #     - DB_USER=${DB_USER:-root}
-  #     - DB_PASSWORD=${DB_PASSWORD:-password}
-  #     - DB_NAME=${DB_NAME:-mariadb}
-  #     - TZ=${TIMEZONE:-America/Chicago}
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
-  #   volumes:
-  #     - ./dht11-app:/app
-  #   networks:
-  #     - app-network
-  #   tty: true
-  #   privileged: true
-  #   healthcheck:
-  #     test: [ "CMD", "curl", "-f", "http://127.0.0.1:${DHT11_PORT:-3009}" ]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-
   react-app:
     build:
       context: ./front-end
@@ -38,6 +10,33 @@ services:
       - /usr/src/app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+
+  dht11-app:
+    env_file: .env
+    build:
+      context: ./dht11-app
+    container_name: ${DHT11_APP_NAME:-dht11-app}
+    ports:
+      - "${DHT11_PORT:-3009}:${DHT11_PORT:-3009}"
+    environment:
+      - DB_HOST=${DB_HOST:-mariadb}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-mariadb}
+      - TZ=${TIMEZONE:-America/Chicago}
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - ./dht11-app:/app
+    networks:
+      - app-network
+    privileged: true
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:${DHT11_PORT:-3009}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   weather-app:
     env_file: .env
@@ -59,7 +58,6 @@ services:
       - ./weather-app:/app
     networks:
       - app-network
-    tty: true
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://127.0.0.1:${WEATHER_PORT:-3001}" ]
       interval: 30s
@@ -86,7 +84,6 @@ services:
       - ./web-api:/app
     networks:
       - app-network
-    tty: true
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://127.0.0.1:${WEB_API_PORT:-3002}" ]
       interval: 30s
