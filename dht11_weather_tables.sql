@@ -7,7 +7,7 @@ USE mariadb;
 -- Create a table for storing temperature and humidity
 CREATE TABLE IF NOT EXISTS dht11_readings (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fahrenheit DOUBLE NOT NULL,
+    farenheit DOUBLE NOT NULL,
     celsius DOUBLE NOT NULL,
     humidity DOUBLE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

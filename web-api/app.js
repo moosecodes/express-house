@@ -1,6 +1,10 @@
+import dotenv from 'dotenv/config';
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
+import cors from 'cors';
+
+import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
@@ -16,7 +20,9 @@ app.set('views', path.join(path.dirname(''), 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(''), 'public')));
