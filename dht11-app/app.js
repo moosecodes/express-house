@@ -10,7 +10,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
-import climateRouter from './routes/climate.js';
 import fetchClimateData from './services/climate.js';
 
 const app = express();
@@ -28,7 +27,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(''), 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/climate', climateRouter);
 
 // console.log(expressListEndpoints(app));
 

@@ -3,16 +3,14 @@ import db from '../utils/database.js';
 
 const router = express.Router();
 
-
 (async () => {
   try {
     const [rows] = await db.query('SELECT 3 + 1 AS solution');
-    console.log('Database Sanity Check Complete...', rows);
+    console.log('Web API Database Sanity Check Complete...', rows);
   } catch (err) {
     console.error('Database Connection Error:', err.message);
   }
 })();
-
 
 /* GET current climate data */
 router.get('/current', async (req, res, next) => {

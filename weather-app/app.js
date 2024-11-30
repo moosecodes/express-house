@@ -10,7 +10,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
-import weatherRouter from './routes/weather.js';
 
 import fetchWeatherData from './services/weather.js';
 
@@ -29,7 +28,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(path.dirname(''), 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/weather', weatherRouter);
 
 // console.log(expressListEndpoints(app));
 
